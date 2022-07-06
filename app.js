@@ -36,7 +36,7 @@ const imageModel = new mongoose.model("Image", imageSchema);
 
 app.get("/", (req, res) => {
 	res.send(`
-        <h1 text-align="center">Welcome To Image CDN For Medi-X</h1>
+        <h1 style"text-align: center">Welcome To Image CDN For Medi-X</h1>
     `);
 });
 
