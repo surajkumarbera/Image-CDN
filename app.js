@@ -36,10 +36,7 @@ const imageModel = new mongoose.model("Image", imageSchema);
 
 app.get("/", (req, res) => {
 	res.send(`
-        <form action="/api/image" method="post" enctype="multipart/form-data">
-            <input type="file" id="img" name="img" />
-            <input type="submit" value="Submit" />
-        </form>
+        <h1>Welcome To Image CDN For Medi-X</h1>
     `);
 });
 
