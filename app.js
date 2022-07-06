@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 var cors = require("cors");
-require("dotenv/config");
 
 const fs = require("fs");
 const path = require("path");
 
+MONGO_URL =
+	"mongodb+srv://skb:5009@medix.qjfww.mongodb.net/?retryWrites=true&w=majority";
 const port = process.env.PORT || 80;
 const app = express();
 const upload = multer({ dest: "uploads/" });
@@ -17,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 mongoose.connect(
-	process.env.MONGO_URL,
+	MONGO_URL,
 	{ useNewUrlParser: true, useUnifiedTopology: true },
 	(err) => {
 		console.log("connected");
