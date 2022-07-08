@@ -26,7 +26,6 @@ mongoose.connect(
 );
 
 const imageSchema = new mongoose.Schema({
-	name: String,
 	img: {
 		data: Buffer,
 		contentType: String,
@@ -41,15 +40,19 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/image/*", (req, res) => {
-	let image_name = req.url.substring(11);
+	let image_id = req.url.substring(11);
 
 	imageModel
 		.findOne({
-			name: image_name,
+			_id: image_id,
 		})
-		.exec((erroe, data) => {
-			res.type(data.img.contentType);
-			res.send(data.img.data);
+		.exec((err, data) => {
+			if (err) {
+				res.send(err);
+			} else {
+				res.type(data.img.contentType);
+				res.send(data.img.data);
+			}
 		});
 });
 
@@ -60,7 +63,6 @@ app.post("/api/image", upload.array("img"), (req, res) => {
 	) {
 		if (req.files[0].originalname) {
 			const obj = {
-				name: req.body.ImageName,
 				img: {
 					data: fs.readFileSync(
 						path.join(__dirname, "uploads", req.files[0].filename)
@@ -68,14 +70,17 @@ app.post("/api/image", upload.array("img"), (req, res) => {
 					contentType: req.files[0].mimetype,
 				},
 			};
-			console.log(obj.name);
+
 			const newImage = new imageModel(obj);
-			id = newImage.save(function (err) {
-				if (err) return console.error(err);
+			newImage.save((err, room) => {
+				if (err) {
+					res.send(err);
+				} else {
+					res.status(200).send(room._id);
+				}
 			});
 
 			fs.unlinkSync(path.join(__dirname, "uploads", req.files[0].filename));
-			res.status(200).send("success");
 		} else {
 			res.status(400).send("Bad Request");
 		}
