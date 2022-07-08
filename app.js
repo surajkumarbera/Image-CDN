@@ -60,7 +60,7 @@ app.post("/api/image", upload.array("img"), (req, res) => {
 	) {
 		if (req.files[0].originalname) {
 			const obj = {
-				name: req.body.Name,
+				name: req.body.ImageName,
 				img: {
 					data: fs.readFileSync(
 						path.join(__dirname, "uploads", req.files[0].filename)
